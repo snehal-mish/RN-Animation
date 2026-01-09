@@ -1,45 +1,119 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import { StyleSheet, View, Image, Text } from "react-native";
+import CardComp from "./src/CardComp";
+import { JSX } from "react";
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+// ---------------- TYPES ----------------
+
+interface User {
+  id: number;
+  name: string;
+  avatar: string;
+}
+
+// ---------------- DATA ----------------
+
+const users: User[] = [
+  {
+    id: 1,
+    name: "Card 1",
+    avatar: "https://picsum.photos/200/300",
+  },
+  {
+    id: 2,
+    name: "Card 2",
+    avatar: "https://picsum.photos/200/300",
+  },
+  {
+    id: 3,
+    name: "Card 3",
+    avatar: "https://picsum.photos/200/300",
+  },
+  {
+    id: 4,
+    name: "Card 4",
+    avatar: "https://picsum.photos/200/300",
+  },
+];
+
+// ---------------- COMPONENT ----------------
 
 function App() {
-  const isDarkMode = useColorScheme() === 'dark';
+  const renderCard = (item: User): JSX.Element => {
+    return (
+      <View style={styles.cardContainer}>
+        <Image source={{ uri: item.avatar }} style={styles.image} />
+        <View style={styles.headerContainer}>
+          <Text style={styles.header}>{item.name}</Text>
+        </View>
+      </View>
+    );
+  };
+
+  const renderNoMoreCard = (): JSX.Element => {
+    return (
+      <View style={styles.noMoreCardContainer}>
+        <Text style={styles.header}>You ran out of cards!!</Text>
+      </View>
+    );
+  };
 
   return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
+    <CardComp
+      data={users}
+      renderCard={renderCard}
+      renderNoMoreCard={renderNoMoreCard}
+      onSwipeLeft={() => {
+        console.log("Left Swipe");
+      }}
+      onSwipeRight={() => {
+        console.log("Right Swipe");
+      }}
+    />
   );
 }
-
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
-
-  return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
 
 export default App;
+
+// ---------------- STYLES ----------------
+
+const styles = StyleSheet.create({
+  app: {
+    marginHorizontal: "auto",
+    maxWidth: 500,
+  },
+  noMoreCardContainer: {
+    width: 200,
+    height: 200,
+    borderWidth: 2,
+    alignSelf: "center",
+    marginTop: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 25,
+  },
+  cardContainer: {
+    width: 200,
+    height: 200,
+    borderWidth: 2,
+    alignSelf: "center",
+    marginTop: 20,
+    borderRadius: 8,
+  },
+  image: {
+    height: 150,
+    width: 196,
+    borderWidth: 2,
+    borderColor: "white",
+    borderRadius: 8,
+  },
+  headerContainer: {
+    backgroundColor: "white",
+    width: "100%",
+    height: 40,
+  },
+  header: {
+    fontSize: 20,
+    fontWeight: "900", 
+    alignSelf: "center",
+  },
+});
